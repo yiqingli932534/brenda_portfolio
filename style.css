@@ -1,42 +1,53 @@
-/* -------------------------------
-   Global accent color
---------------------------------*/
+/* =========================================
+   Step 4.1 – Automatic Dark Mode Support
+   ========================================= */
 html {
-  --color-accent: oklch(65% 50% 0);           /* tweak this to change site accent */
-  accent-color: var(--color-accent);          /* lets form controls inherit color */
+  /* Allow both light and dark modes depending on OS */
+  color-scheme: light dark;
+
+  /* Adaptive system colors */
+  background-color: Canvas;
+  color: CanvasText;
+
+  /* Typography */
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+
+  /* Accent color for interactive elements */
+  --color-accent: oklch(65% 50% 0);
+  accent-color: var(--color-accent);
 }
 
-/* -------------------------------
-   Base text and layout styles
---------------------------------*/
+/* =========================================
+   Base layout
+   ========================================= */
 body {
-  /* Typography */
+  position: relative;        /* anchor for absolute elements */
   font: 100%/1.5 system-ui;
-
-  /* Step 1: Limit content width and center it */
   max-width: 100ch;
   margin-inline: auto;
   padding-inline: 1em;
 }
 
-/* -------------------------------
-   Navigation bar
---------------------------------*/
-
-/* Step 2.1: Remove default list layout */
-nav ul,
-nav li {
-  display: contents;                          /* removes bullets & default spacing */
-}
-
-/* Step 2.2: Layout nav links horizontally and evenly */
+/* =========================================
+   Navigation Bar (adaptive for dark mode)
+   ========================================= */
 nav {
   display: flex;
-  border-bottom: 1px solid oklch(80% 3% 200); /* subtle divider line */
-  margin-bottom: 1rem;                        /* space below nav */
+  align-items: center;
+  justify-content: space-evenly;
+
+  /* Adaptive border */
+  --border-color: oklch(50% 10% 200 / 40%);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
 }
 
-/* Step 2.3: Base link styling */
+nav ul,
+nav li {
+  display: contents;
+}
+
 nav a {
   flex: 1;
   text-align: center;
@@ -45,76 +56,62 @@ nav a {
   padding: 0.5em;
 }
 
-/* Current-page highlight */
+/* Highlight current page */
 nav a.current {
-  border-bottom: 0.4em solid oklch(80% 3% 200);
+  border-bottom: 0.4em solid var(--border-color);
   padding-bottom: 0.1em;
 }
 
-/* Step 2.4: Hover accent color */
+/* Hover (dark-mode-friendly mix) */
 nav a:hover,
 nav a.current:hover {
   border-bottom: 0.4em solid var(--color-accent);
-  background-color: oklch(from var(--color-accent) 95% 5% h);
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
 
-/* -------------------------------
-   Step 3: Contact form layout
---------------------------------*/
-
-/* 3.1: Match typography for form controls */
+/* =========================================
+   Step 3 – Contact Form layout (grid version)
+   ========================================= */
 input,
 textarea,
-button {
+button,
+select {
   font: inherit;
+  background-color: Field;
+  color: FieldText;
+  border: 1px solid GrayText;
+  border-radius: 0.25em;
+  box-sizing: border-box;
+  padding: 0.5em;
 }
 
-/* 3.2: Basic top-down flow (for small screens / fallback) */
 label,
 input,
 textarea,
 button {
   display: block;
-}
-
-input,
-textarea {
   width: 100%;
-  box-sizing: border-box;
 }
 
 label {
   margin-block: 0.5em;
 }
 
-/* 3.3: Grid layout for aligned labels & fields */
 form.contact {
   display: grid;
-  grid-template-columns: auto 1fr;   /* label | input columns */
-  gap: 1em;                          /* space between rows/columns */
+  grid-template-columns: auto 1fr;
+  gap: 1em;
+  max-width: 500px;
 }
 
-/* make labels follow parent grid */
 form.contact label {
   display: grid;
   grid-template-columns: subgrid;
   grid-column: 1 / -1;
 }
 
-/* make submit button span both columns */
 form.contact button {
   grid-column: 1 / -1;
-}
-
-/* Optional polish: inputs & button styling */
-input,
-textarea {
-  padding: 0.5em;
-  border: 1px solid oklch(80% 3% 200);
-  border-radius: 0.25em;
-}
-
-button {
   background-color: var(--color-accent);
   color: white;
   border: none;
@@ -123,37 +120,37 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+form.contact button:hover {
   background-color: oklch(from var(--color-accent) 60% 50% h);
 }
 
-/* -------------------------------
-   Step 4: Projects page grid
---------------------------------*/
-
-/* 4.2: Responsive grid container */
+/* =========================================
+   Step 4 – Projects Grid
+   ========================================= */
 .projects {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
-  gap: 1em; /* spacing between items */
+  gap: 1em;
 }
 
-/* 4.3: Align article contents with subgrid */
 .projects article {
   display: grid;
   grid-template-rows: subgrid;
   grid-row: span 3;
   padding: 1em;
-  border: 1px solid oklch(90% 3% 200);
+  border: 1px solid var(--border-color);
   border-radius: 0.5em;
+  background-color: Canvas;
+  color: CanvasText;
 }
 
-/* remove extra heading spacing inside cards */
 .projects h2 {
   margin: 0;
 }
 
-/* 4.4: Heading hierarchy and balance */
+/* =========================================
+   Headings
+   ========================================= */
 h1 {
   font-size: 400%;
 }
@@ -166,4 +163,44 @@ h5,
 h6 {
   line-height: 1.1;
   text-wrap: balance;
+}
+
+/* =========================================
+   Step 4.3 – Fix switcher positioning (final)
+   ========================================= */
+
+/* Make sure the page is a positioning context */
+html, body {
+  position: relative;
+}
+
+/* Position the dark-mode switcher in the top-right corner */
+label.color-scheme {
+  position: fixed;       /* fixes it relative to the viewport */
+  top: 1rem;             /* distance from the top edge */
+  right: 1rem;           /* distance from the right edge */
+  font-size: 80%;
+  font-family: inherit;
+  color: CanvasText;
+  background: none;      /* remove gray background box */
+  border: none;          /* remove surrounding border */
+  padding: 0;
+  z-index: 2000;         /* make sure it’s above nav and content */
+}
+
+/* Clean styling for the dropdown */
+label.color-scheme select {
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  border: 1px solid GrayText;
+  border-radius: 0.25em;
+  padding: 0.2em 0.4em;
+  margin-left: 0.3em;
+  cursor: pointer;
+}
+
+/* Optional subtle hover */
+label.color-scheme select:hover {
+  border-color: var(--color-accent);
 }
