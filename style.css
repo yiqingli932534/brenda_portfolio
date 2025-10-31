@@ -279,3 +279,124 @@ label.color-scheme select:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* =========================================
+   Step 5.0.1 – Show project year
+   ========================================= */
+.project-year {
+  color: gray;
+  font-family: Baskerville, serif;
+  font-variant-numeric: oldstyle-nums;
+  margin-top: 0.25em;
+  font-size: 0.9em;
+}
+
+/* =========================================
+   Step 5.1.1 – SVG Pie Chart
+   ========================================= */
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 1.5em;
+  overflow: visible;
+  display: block;
+  margin-left: 0;       /* align with left margin */
+  margin-right: auto;   /* prevent centering */
+}
+
+
+/* =========================================
+   Step 5.2.2 – Legend Styling
+   ========================================= */
+.legend {
+  /* Grid layout that adapts to screen width */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr));
+  gap: 1em;
+
+  list-style: none;
+  padding: 1em;
+  margin-top: 1.5em;
+
+  /* Subtle container styling */
+  border: 1px solid var(--border-color, oklch(50% 10% 200 / 40%));
+  border-radius: 0.5em;
+  background-color: color-mix(in oklch, canvas, canvastext 5%);
+}
+
+/* Each legend item (li) */
+.legend-item {
+  display: flex;                 /* Horizontal layout for swatch + text */
+  align-items: center;           /* Vertically center the items */
+  gap: 0.5em;                    /* Space between swatch and label */
+  font-size: 0.95em;
+  line-height: 1.2;
+}
+
+/* Swatch (colored square/circle) */
+.legend-item .swatch {
+  display: inline-block;         /* Make width & height effective */
+  width: 1em;                    /* Square shape */
+  aspect-ratio: 1 / 1;           /* Ensures perfect square scaling */
+  background-color: var(--color);/* Pulls color from inline --color style */
+  border-radius: 0.2em;          /* Rounded corners (set to 50% for circles) */
+  flex-shrink: 0;                /* Prevent shrinking */
+}
+
+/* Optional hover effect (makes legend interactive-looking) */
+.legend-item:hover .swatch {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+
+/* =========================================
+   Step 5.2.3 – Pie Chart + Legend Layout
+   ========================================= */
+.container {
+  display: flex;                 /* horizontal layout */
+  align-items: center;           /* vertically align chart & legend */
+  justify-content: center;       /* center horizontally in the page */
+  gap: 2em;                      /* spacing between chart and legend */
+  flex-wrap: wrap;               /* allow stacking on narrow screens */
+  margin-block: 2em;
+}
+
+.container svg {
+  flex: 0 0 auto;                /* fixed size for the chart */
+  max-width: 20em;
+  overflow: visible;
+}
+
+.container .legend {
+  flex: 1;                       /* legend expands to fill remaining width */
+  min-width: 15em;               /* avoid shrinking too small */
+}
+
+@media (max-width: 700px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* =========================================
+   Step 5.5.1 – Hover + Selected Effects
+   ========================================= */
+svg path {
+  transition: 300ms;
+  cursor: pointer;
+}
+
+/* Hover: fade non-hovered wedges */
+svg:has(path:hover) path:not(:hover) {
+  opacity: 0.5;
+}
+
+/* Selected wedge + legend */
+.selected {
+  --color: oklch(60% 45% 0) !important;
+}
+
+.selected:is(path) {
+  fill: var(--color);
+}

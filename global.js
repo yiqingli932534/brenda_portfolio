@@ -151,12 +151,15 @@ export function renderProjects(projects, containerElement, headingLevel = 'h2') 
   for (const project of projects) {
     const article = document.createElement('article');
 
-    // 4️⃣ Fill in the content dynamically
-    article.innerHTML = `
+    // 4️⃣ Fill in the content dynamically including the year Step 5.0.1
+     article.innerHTML = `
       <${headingLevel}>${project.title ?? 'Untitled Project'}</${headingLevel}>
       <img src="${project.image ?? 'https://vis-society.github.io/labs/2/images/empty.svg'}"
            alt="${project.title ?? 'Project image'}">
-      <p>${project.description ?? 'No description available.'}</p>
+      <div class="project-desc">
+        <p>${project.description ?? 'No description available.'}</p>
+        <p class="project-year">${project.year ?? ''}</p>
+      </div>
     `;
 
     // 5️⃣ Append to the container

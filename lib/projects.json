@@ -2,12 +2,14 @@
     {
         "title": "ClearMind Mobile App",
         "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "\n        A mobile app that helps college students manage procrastination through\n        interactive Acceptance and Commitment Therapy (ACT) activities, mindfulness\n        exercises, and goal tracking.\n      "
+        "description": "\n        A mobile app that helps college students manage procrastination through\n        interactive Acceptance and Commitment Therapy (ACT) activities, mindfulness\n        exercises, and goal tracking.\n      ",
+        "year": 2024
     },
     {
         "title": "WISE: Domain-Aware Data Science Assistant",
         "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-        "description": "\n        A prototype LLM-based system that supports novice data scientists by providing\n        domain context explanations, helping them interpret unfamiliar datasets more effectively.\n      "
+        "description": "\n        A prototype LLM-based system that supports novice data scientists by providing\n        domain context explanations, helping them interpret unfamiliar datasets more effectively.\n      ",
+        "year": 2023
     },
     {
         "title": "DataJam Outreach Program",
