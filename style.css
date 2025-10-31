@@ -30,7 +30,7 @@ body {
 }
 
 /* =========================================
-   Navigation Bar (adaptive for dark mode)
+   NAVIGATION BAR SPACING FIX
    ========================================= */
 nav {
   display: flex;
@@ -40,34 +40,67 @@ nav {
   /* Adaptive border */
   --border-color: oklch(50% 10% 200 / 40%);
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: 1rem;
+
+  /* Added spacing */
+  margin: 1rem 0 1.5rem;   /* space above and below nav */
+  padding-block: 0.6rem;   /* vertical padding inside nav */
+  border-radius: 0.3em;    /* optional: smooth corners */
+  background-color: color-mix(in oklch, canvas, canvastext 5%);
 }
 
-nav ul,
-nav li {
-  display: contents;
-}
-
+/* Keep nav links balanced */
 nav a {
   flex: 1;
   text-align: center;
   text-decoration: none;
   color: inherit;
   padding: 0.5em;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Highlight current page */
+/* Highlight current and hover states */
 nav a.current {
-  border-bottom: 0.4em solid var(--border-color);
-  padding-bottom: 0.1em;
+  border-bottom: 0.3em solid var(--color-accent);
 }
 
-/* Hover (dark-mode-friendly mix) */
-nav a:hover,
-nav a.current:hover {
-  border-bottom: 0.4em solid var(--color-accent);
+nav a:hover {
+  border-bottom: 0.3em solid var(--color-accent);
   background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
+
+/* =========================================
+   DARK MODE SWITCH – FIXED TOP RIGHT
+   ========================================= */
+label.color-scheme {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: CanvasText;
+  background-color: color-mix(in oklch, canvas, canvastext 10%);
+  border: 1px solid var(--border-color);
+  border-radius: 0.4em;
+  padding: 0.3em 0.6em;
+  z-index: 9999;
+}
+
+
+/* dropdown styling */
+label.color-scheme select {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 0.4em;
+}
+
+/* subtle hover effect */
+label.color-scheme select:hover {
+  color: var(--color-accent);
+}
+
 
 /* =========================================
    Step 3 – Contact Form layout (grid version)
@@ -203,4 +236,46 @@ label.color-scheme select {
 /* Optional subtle hover */
 label.color-scheme select:hover {
   border-color: var(--color-accent);
+}
+
+/* =========================================
+   Step 4.4 – GitHub Stats Grid
+   ========================================= */
+#profile-stats dl {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* four equal columns */
+  gap: 0.5em;
+  text-align: center;
+  padding: 1em;
+  margin-block: 1.5em;
+  background-color: color-mix(in oklch, canvas, canvastext 5%); /* subtle contrast */
+  border-radius: 0.5em;
+  border: 1px solid var(--border-color);
+}
+
+#profile-stats dt {
+  grid-row: 1; /* top row for titles */
+  font-weight: bold;
+  color: var(--color-accent);
+}
+
+#profile-stats dd {
+  grid-row: 2; /* second row for numbers */
+  margin: 0;
+  font-size: 1.2em;
+  color: CanvasText;
+}
+
+/* Hover animation for numbers */
+#profile-stats dd:hover {
+  transform: scale(1.05);
+  color: var(--color-accent);
+  transition: 0.2s ease;
+}
+
+/* Responsive layout: stack stats on small screens */
+@media (max-width: 600px) {
+  #profile-stats dl {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

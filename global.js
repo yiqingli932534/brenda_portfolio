@@ -97,6 +97,8 @@ document.body.insertAdjacentHTML(
   </label>
   `
 );
+
+
 // =========================================
 // Step 4.4 – Make the dark-mode switch work
 // =========================================
@@ -112,3 +114,58 @@ select.addEventListener("input", (event) => {
   // Apply the chosen color scheme to the <html> element
   document.documentElement.style.setProperty("color-scheme", newScheme);
 });
+
+
+
+// Step 4.1.2 - how to get data from a URL
+export async function fetchJSON(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching or parsing JSON data:', error);
+    throw error; // re-throw if you want callers to catch it
+  }
+}
+
+// Step 4.1.4 - how to create <article> elements for projects.
+export function renderProjects(projects, containerElement, headingLevel = 'h2') {
+  // 1️⃣ Clear existing content
+  containerElement.innerHTML = '';
+
+  // 2️⃣ Validate inputs
+  if (!Array.isArray(projects)) {
+    console.error('renderProjects: "projects" must be an array.');
+    return;
+  }
+  if (!containerElement) {
+    console.error('renderProjects: containerElement not found.');
+    return;
+  }
+
+  // 3️⃣ Loop through each project and create <article> elements
+  for (const project of projects) {
+    const article = document.createElement('article');
+
+    // 4️⃣ Fill in the content dynamically
+    article.innerHTML = `
+      <${headingLevel}>${project.title ?? 'Untitled Project'}</${headingLevel}>
+      <img src="${project.image ?? 'https://vis-society.github.io/labs/2/images/empty.svg'}"
+           alt="${project.title ?? 'Project image'}">
+      <p>${project.description ?? 'No description available.'}</p>
+    `;
+
+    // 5️⃣ Append to the container
+    containerElement.appendChild(article);
+  }
+}
+
+// Step 4.3.2 – knows how to get your GitHub profile info/Fetch GitHub data
+export async function fetchGitHubData(username) {
+  // Use our reusable fetchJSON() function to get data from the GitHub API
+  return fetchJSON(`https://api.github.com/users/${username}`);
+}
